@@ -1,59 +1,102 @@
-# PmBooksPortal
+# PM Books Portal
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.1.
+Library management application built with Angular.
 
-## Development server
+## Live Demo
 
-To start a local development server, run:
+- **Deployed URL:** http://pm-books-portal.angularjobs.co.il
+
+## Features
+
+- View list of books
+- Search books by name and author
+- View book details
+- Add / edit / delete books with form validation
+- Responsive layout for desktop and mobile
+
+## Data Source
+
+The app uses **Open Library API** for initial data population.
+
+- Initial load request (200 items, any ratings):  
+  https://openlibrary.org/search.json?q=ratings_count:%5B0%20TO%20*%5D&limit=200
+
+## Tech Stack
+
+- Angular
+- TypeScript
+- HTML
+- SCSS/CSS
+
+## Run Locally
+
+### Prerequisites
+
+- Node.js (LTS recommended)
+- npm
+- Angular CLI
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/AvnerHadjadj/pm-books-portal
+   cd pm-books-portal
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Start development server:
+   ```bash
+   npm start
+   ```
+   or:
+   ```bash
+   ng serve
+   ```
+
+4. Open:
+   - `http://localhost:4200`
+
+## Build
 
 ```bash
-ng serve
+npm run build
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Production build output is generated in `dist/`.
 
-## Code scaffolding
+## Testing
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### Unit Tests
 
+Run:
 ```bash
-ng generate component component-name
+npm test
 ```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
+or:
 ```bash
 ng test
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+### Optional: Headless test run (CI style)
 
 ```bash
-ng e2e
+ng test --watch=false --browsers=ChromeHeadless
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Notes / Trade-offs
 
-## Additional Resources
+- The initial book list is fetched from Open Library with a fixed query/limit for predictable startup behavior.
+- As this is an assignment project, some production hardening items (advanced error handling, caching strategy, and API resiliency) can be expanded further if needed.
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Submission Checklist
+
+- [x] Source code uploaded to a public GitHub repository
+- [x] Public deployed app link provided
+- [x] README includes local run instructions
+- [x] README includes testing instructions
+- [x] Optional feature documented (external book API: Open Library)
