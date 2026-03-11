@@ -4,7 +4,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { NgOptimizedImage } from '@angular/common';
+import { DecimalPipe, NgOptimizedImage } from '@angular/common';
 
 import { BookSearchResult } from '../../books/openlibrary.types';
 
@@ -20,6 +20,7 @@ import { BookSearchResult } from '../../books/openlibrary.types';
     MatIconModule,
     MatButtonModule,
     MatTooltipModule,
+    DecimalPipe
   ],
 })
 export class BookCardComponent {
