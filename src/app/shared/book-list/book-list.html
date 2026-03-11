@@ -11,9 +11,11 @@
     <app-book-card
       *cdkVirtualFor="let book of books(); trackBy: trackByKey"
       [book]="book"
+      [isCheckedOut]="checkedOutBookKeys().includes(book.key)"
       (selected)="bookSelected.emit($event)"
       (edited)="bookEdited.emit($event)"
       (deleted)="bookDeleted.emit($event)"
+      (lendingToggled)="bookLendingToggled.emit($event)"
     />
   </cdk-virtual-scroll-viewport>
 }

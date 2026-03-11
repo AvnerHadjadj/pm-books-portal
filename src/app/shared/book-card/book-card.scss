@@ -95,6 +95,21 @@
   }
 }
 
+.lending-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  margin-bottom: 6px;
+  color: var(--mat-sys-primary);
+
+  mat-icon {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+  }
+}
+
 .rating {
   display: flex;
   align-items: center;

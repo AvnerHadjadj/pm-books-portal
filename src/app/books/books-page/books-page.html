@@ -1,6 +1,12 @@
 <main class="page-content">
   <section class="actions-section" aria-label="Book actions">
-    <h1>PMBooks</h1>
+    <div class="title-group">
+      <h1>PMBooks</h1>
+      <div class="inventory-meta" aria-label="Lending summary">
+        <span>Available: <strong>{{ store.availableCount() }}</strong></span>
+        <span>Checked out: <strong>{{ store.checkedOutCount() }}</strong></span>
+      </div>
+    </div>
     <button mat-flat-button type="button" (click)="onAddBook()" aria-label="Add book">
       <mat-icon aria-hidden="true">add</mat-icon>
       Add book
@@ -30,10 +36,12 @@
 
     <app-book-list
       [books]="store.filteredBooks()"
+      [checkedOutBookKeys]="store.checkedOutBookKeys()"
       [isLoading]="store.isLoading()"
       (bookSelected)="onBookSelected($event)"
       (bookEdited)="onBookEdited($event)"
       (bookDeleted)="onBookDeleted($event)"
+      (bookLendingToggled)="onBookLendingToggled($event)"
     />
 
     @if (store.hasMore()) {

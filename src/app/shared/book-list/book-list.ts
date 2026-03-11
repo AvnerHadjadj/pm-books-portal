@@ -14,10 +14,12 @@ import { BookSearchResult } from '../../books/openlibrary.types';
 })
 export class BookListComponent {
   readonly books = input.required<BookSearchResult[]>();
+  readonly checkedOutBookKeys = input<string[]>([]);
   readonly isLoading = input<boolean>(false);
   readonly bookSelected = output<BookSearchResult>();
   readonly bookEdited = output<BookSearchResult>();
   readonly bookDeleted = output<BookSearchResult>();
+  readonly bookLendingToggled = output<BookSearchResult>();
 
   trackByKey(_index: number, book: BookSearchResult): string {
     return book.key;

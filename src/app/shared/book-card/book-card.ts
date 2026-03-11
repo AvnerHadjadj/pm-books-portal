@@ -27,9 +27,11 @@ import { BookSearchResult } from '../../books/openlibrary.types';
 })
 export class BookCardComponent {
   readonly book = input.required<BookSearchResult>();
+  readonly isCheckedOut = input<boolean>(false);
   readonly selected = output<BookSearchResult>();
   readonly edited = output<BookSearchResult>();
   readonly deleted = output<BookSearchResult>();
+  readonly lendingToggled = output<BookSearchResult>();
 
   readonly coverUrl = computed(() => {
     const coverId = this.book().cover_i;
@@ -64,5 +66,9 @@ export class BookCardComponent {
 
   onDelete(): void {
     this.deleted.emit(this.book());
+  }
+
+  onLendingToggle(): void {
+    this.lendingToggled.emit(this.book());
   }
 }

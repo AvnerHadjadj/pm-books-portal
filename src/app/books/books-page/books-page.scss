@@ -13,6 +13,27 @@
   align-items: center;
 }
 
+.title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  h1 {
+    margin: 0;
+  }
+}
+
+.inventory-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--mat-sys-on-surface-variant);
+
+  strong {
+    color: var(--mat-sys-on-surface);
+  }
+}
+
 .search-section {
   background: var(--mat-sys-surface-container);
   border-radius: 12px;

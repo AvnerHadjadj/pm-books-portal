@@ -108,4 +108,13 @@ export class BooksPageComponent {
     this.store.deleteBook(book);
     this.snackBar.open(`Deleted "${book.title}"`, 'Dismiss', { duration: 3000 });
   }
+
+  onBookLendingToggled(book: BookSearchResult): void {
+    const isNowCheckedOut = this.store.toggleBookLending(book.key);
+    this.snackBar.open(
+      isNowCheckedOut ? `Checked out "${book.title}"` : `Checked in "${book.title}"`,
+      'Dismiss',
+      { duration: 3000 },
+    );
+  }
 }

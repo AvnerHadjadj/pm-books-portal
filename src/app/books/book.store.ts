@@ -13,6 +13,7 @@ const DEFAULT_PAGE_SIZE = 10;
 interface BooksState {
     books: BookSearchResult[];
     filteredBooks: BookSearchResult[];
+    checkedOutBookKeys: string[];
     selectedBook: BookSearchResult | null;
     searchParams: BookSearchParams;
     isLoading: boolean;
@@ -23,6 +24,7 @@ interface BooksState {
 const initialState: BooksState = {
     books: [],
     filteredBooks: [],
+    checkedOutBookKeys: [],
     selectedBook: null,
     searchParams: { q: '', limit: DEFAULT_PAGE_SIZE, offset: 0 },
     isLoading: false,
@@ -33,10 +35,12 @@ const initialState: BooksState = {
 export const BooksStore = signalStore(
     { providedIn: 'root' },
     withState(initialState),
-    withComputed(({ books, totalFound, searchParams, filteredBooks }) => ({
+    withComputed(({ books, totalFound, searchParams, filteredBooks, checkedOutBookKeys }) => ({
         hasBooks: computed(() => books().length > 0),
         hasMore: computed(() => books().length < totalFound()),
         loadedCount: computed(() => filteredBooks().length),
+        checkedOutCount: computed(() => checkedOutBookKeys().length),
+        availableCount: computed(() => Math.max(0, books().length - checkedOutBookKeys().length)),
         pageSize: computed(() => Math.max(1, searchParams().limit ?? DEFAULT_PAGE_SIZE)),
         currentPage: computed(() => {
             const size = Math.max(1, searchParams().limit ?? DEFAULT_PAGE_SIZE);
@@ -227,6 +231,20 @@ export const BooksStore = signalStore(
                 patchState(store, { selectedBook: book });
             },
 
+            isBookCheckedOut(bookKey: string): boolean {
+                return store.checkedOutBookKeys().includes(bookKey);
+            },
+
+            toggleBookLending(bookKey: string): boolean {
+                const isCurrentlyCheckedOut = store.checkedOutBookKeys().includes(bookKey);
+                const nextCheckedOutBookKeys = isCurrentlyCheckedOut
+                    ? store.checkedOutBookKeys().filter((key) => key !== bookKey)
+                    : [...store.checkedOutBookKeys(), bookKey];
+
+                patchState(store, { checkedOutBookKeys: nextCheckedOutBookKeys });
+                return !isCurrentlyCheckedOut;
+            },
+
             addBook(input: BookUpsertInput): void {
                 const createdBook = buildNewBook(input);
                 const nextBooks = [createdBook, ...store.books()];
@@ -262,6 +280,7 @@ export const BooksStore = signalStore(
                 patchState(store, {
                     books: nextBooks,
                     filteredBooks: nextFilteredBooks,
+                    checkedOutBookKeys: store.checkedOutBookKeys().filter((bookKey) => bookKey !== bookToDelete.key),
                     totalFound: nextBooks.length,
                     selectedBook: store.selectedBook()?.key === bookToDelete.key ? null : store.selectedBook(),
                 });

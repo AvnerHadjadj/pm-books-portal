@@ -39,6 +39,10 @@
     </mat-card-header>
 
     <mat-menu #bookActionsMenu="matMenu" yPosition="below">
+      <button mat-menu-item type="button" (click)="onLendingToggle()">
+        <mat-icon>{{ isCheckedOut() ? 'keyboard_return' : 'logout' }}</mat-icon>
+        <span>{{ isCheckedOut() ? 'Check in' : 'Check out' }}</span>
+      </button>
       <button mat-menu-item type="button" (click)="onEdit()">
         <mat-icon>edit</mat-icon>
         <span>Edit</span>
@@ -50,6 +54,11 @@
     </mat-menu>
 
     <mat-card-content>
+      <div class="lending-state" [attr.aria-label]="isCheckedOut() ? 'Checked out' : 'Available'">
+        <mat-icon aria-hidden="true">{{ isCheckedOut() ? 'menu_book' : 'library_books' }}</mat-icon>
+        <span>{{ isCheckedOut() ? 'Checked out' : 'Available' }}</span>
+      </div>
+
       <div class="meta">
         @if (book().first_publish_year) {
           <span class="year" aria-label="First published {{ book().first_publish_year }}">
