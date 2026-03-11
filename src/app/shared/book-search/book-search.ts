@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { TitleCasePipe } from '@angular/common';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -33,7 +33,13 @@ export class BookSearchComponent {
   readonly limitOptions = [10, 25, 50, 100];
 
   readonly form = new FormGroup({
-    q: new FormControl('', { nonNullable: true }),
+    q: new FormControl('', {
+      nonNullable: true,
+      validators: [
+        Validators.required,
+        Validators.minLength(3)
+      ]
+    }),
     author: new FormControl('', { nonNullable: true }),
     sort: new FormControl<SortOption>('relevance', { nonNullable: true }),
     limit: new FormControl(10, { nonNullable: true }),
