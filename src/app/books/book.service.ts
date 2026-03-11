@@ -1,8 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable, of, throwError } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
-import { OpenLibraryClientConfig, BookSearchParams, BookSearchResponse, ApiError, YearRange } from './openlibrary.types';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { OpenLibraryClientConfig, BookSearchParams, BookSearchResponse, ApiError } from './openlibrary.types';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({ providedIn: 'root' })
@@ -38,7 +38,7 @@ export class BookService {
                 // TODO: Handle specific error cases (network, API errors, etc.)
                 this.snackBar.open(error, 'Ignore', { duration: 5000 });
                 // Fallback: try local JSON if available
-                return this.loadLocalFallback(params);
+                return this.loadLocalFallback();
             })
         );
     }
@@ -56,7 +56,7 @@ export class BookService {
     }
 
     // Fallback to local JSON file
-    private loadLocalFallback(params: BookSearchParams): Observable<BookSearchResponse | ApiError> {
+    private loadLocalFallback(): Observable<BookSearchResponse | ApiError> {
         // Example: load from assets/books-fallback.json
         return this.http.get<BookSearchResponse>('/assets/books-fallback.json').pipe(
             catchError(() => throwError(() => {

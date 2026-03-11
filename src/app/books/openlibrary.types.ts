@@ -230,31 +230,31 @@ export interface WorkDetails {
     type: string;
     value: string;
   };
-  authors?: Array<{
+  authors?: {
     type: {
       key: string;
     };
     author: {
       key: string;
     };
-  }>;
+  }[];
   subjects?: string[];
   subject_places?: string[];
   subject_times?: string[];
   subject_people?: string[];
   covers?: number[];
   first_publish_date?: string;
-  links?: Array<{
+  links?: {
     url: string;
     title: string;
     type?: {
       key: string;
     };
-  }>;
-  excerpts?: Array<{
+  }[];
+  excerpts?: {
     excerpt: string;
     comment?: string;
-  }>;
+  }[];
   created: {
     type: string;
     value: string;
@@ -277,12 +277,12 @@ export interface EditionDetails {
   };
   title: string;
   subtitle?: string;
-  authors?: Array<{
+  authors?: {
     key: string;
-  }>;
-  works?: Array<{
+  }[];
+  works?: {
     key: string;
-  }>;
+  }[];
   isbn_10?: string[];
   isbn_13?: string[];
   publishers?: string[];
@@ -292,9 +292,9 @@ export interface EditionDetails {
   number_of_pages?: number;
   pagination?: string;
   physical_format?: string;
-  languages?: Array<{
+  languages?: {
     key: string;
-  }>;
+  }[];
   subjects?: string[];
   covers?: number[];
   series?: string[];
@@ -307,11 +307,11 @@ export interface EditionDetails {
     type: string;
     value: string;
   };
-  table_of_contents?: Array<{
+  table_of_contents?: {
     title: string;
     level?: number;
     pagenum?: string;
-  }>;
+  }[];
   dewey_decimal_class?: string[];
   lc_classifications?: string[];
   lccn?: string[];
@@ -344,10 +344,10 @@ export interface BookDetails {
     type: string;
     value: string;
   };
-  authors?: Array<{
+  authors?: {
     key: string;
     name?: string;
-  }>;
+  }[];
   publishers?: string[];
   publish_date?: string;
   isbn_10?: string[];
@@ -356,9 +356,9 @@ export interface BookDetails {
   covers?: number[];
   subjects?: string[];
   physical_format?: string;
-  works?: Array<{
+  works?: {
     key: string;
-  }>;
+  }[];
   created: {
     type: string;
     value: string;

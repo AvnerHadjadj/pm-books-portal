@@ -70,7 +70,6 @@ export const BooksStore = signalStore(
         const buildNewBook = (input: BookUpsertInput): BookSearchResult => {
             const nowEpochSeconds = Math.floor(Date.now() / 1000);
             const normalizedAuthor = normalizeToken(input.author) || 'unknown-author';
-            const normalizedTitle = normalizeToken(input.title) || 'untitled';
             const generatedKey = `/works/LOCAL-${Date.now()}-${Math.floor(Math.random() * 100_000)}`;
 
             return {
@@ -196,7 +195,7 @@ export const BooksStore = signalStore(
                 pipe(
                     tap((params) => {
                         const books = store.books();
-                        let filteredBooks = books.filter((book) => {
+                        const filteredBooks = books.filter((book) => {
                             const matchesAuthor = params.author
                                 ? book.author_name?.some((author) =>
                                       author.toLowerCase().includes(params.author!.toLowerCase()),
