@@ -30,13 +30,11 @@ export class BookSearchComponent {
   readonly cleared = output<void>();
 
   readonly sortOptions: SortOption[] = ['relevance', 'new', 'old', 'rating', 'title', 'random'];
-  readonly limitOptions = [10, 25, 50, 100];
 
   readonly form = new FormGroup({
     q: new FormControl('', {
       nonNullable: true,
       validators: [
-        Validators.required,
         Validators.minLength(3)
       ]
     }),
@@ -46,7 +44,6 @@ export class BookSearchComponent {
   });
 
   onSearch(): void {
-    if (!this.form.value.q?.trim()) return;
     const { q, author, sort, limit } = this.form.getRawValue();
     const params: BookSearchParams = { q: q.trim(), sort, limit };
     if (author.trim()) params.author = author.trim();

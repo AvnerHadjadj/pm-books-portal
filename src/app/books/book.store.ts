@@ -33,10 +33,10 @@ const initialState: BooksState = {
 export const BooksStore = signalStore(
     { providedIn: 'root' },
     withState(initialState),
-    withComputed(({ books, totalFound, searchParams }) => ({
+    withComputed(({ books, totalFound, searchParams, filteredBooks }) => ({
         hasBooks: computed(() => books().length > 0),
         hasMore: computed(() => books().length < totalFound()),
-        loadedCount: computed(() => books().length),
+        loadedCount: computed(() => filteredBooks().length),
         pageSize: computed(() => Math.max(1, searchParams().limit ?? DEFAULT_PAGE_SIZE)),
         currentPage: computed(() => {
             const size = Math.max(1, searchParams().limit ?? DEFAULT_PAGE_SIZE);
@@ -88,8 +88,36 @@ export const BooksStore = signalStore(
                 pipe(
                     tap((params) => {
                         const books = store.books();
-                        const filteredBooks = books?.filter((book) => book.title.toLowerCase().includes(params.q.toLowerCase())) || [];
+                        let filteredBooks = books.filter((book) => {
+                            const matchesAuthor = params.author
+                                ? book.author_name?.some((author) =>
+                                      author.toLowerCase().includes(params.author!.toLowerCase()),
+                                  )
+                                : true;
 
+                            const matchesQuery = params.q
+                                ? book.title.toLowerCase().includes(params.q.toLowerCase())
+                                : true;
+
+                            return matchesAuthor && matchesQuery;
+                        }).sort((a, b) => {
+                            switch (params.sort) {
+                                case 'new':
+                                    return (b.first_publish_year ?? 0) - (a.first_publish_year ?? 0);
+                                case 'old':
+                                    return (a.first_publish_year ?? 0) - (b.first_publish_year ?? 0);
+                                case 'rating':
+                                    return (b.ratings_average ?? 0) - (a.ratings_average ?? 0);
+                                case 'title':
+                                    return a.title.localeCompare(b.title);
+                                case 'random':
+                                    return Math.random() - 0.5;
+                                case 'relevance':
+                                default:
+                                    return 0;
+                            }
+                        });
+                        
                         patchState(store, {
                             filteredBooks: filteredBooks,
                         })

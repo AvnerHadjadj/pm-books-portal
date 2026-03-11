@@ -32,21 +32,13 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="field-limit">
-      <mat-label>Results</mat-label>
-      <mat-select formControlName="limit" aria-label="Number of results per page">
-        @for (n of limitOptions; track n) {
-          <mat-option [value]="n">{{ n }}</mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
   </div>
 
   <div class="search-actions">
     <button
       mat-flat-button
       type="submit"
-      [disabled]="isLoading() || !form.value.q?.trim()"
+      [disabled]="isLoading() || form.invalid"
       aria-label="Search"
     >
       <mat-icon aria-hidden="true">search</mat-icon>
