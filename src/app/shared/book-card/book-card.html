@@ -27,7 +27,23 @@
     <mat-card-header>
       <mat-card-title [matTooltip]="book().title">{{ book().title }}</mat-card-title>
       <mat-card-subtitle>{{ authorsText() }}</mat-card-subtitle>
+      <button
+        mat-icon-button
+        type="button"
+        [matMenuTriggerFor]="bookActionsMenu"
+        aria-label="Book actions"
+        (click)="onMenuTriggerClick($event)"
+      >
+        <mat-icon>more_vert</mat-icon>
+      </button>
     </mat-card-header>
+
+    <mat-menu #bookActionsMenu="matMenu" yPosition="below">
+      <button mat-menu-item type="button" (click)="onDelete($event)">
+        <mat-icon>delete</mat-icon>
+        <span>Delete</span>
+      </button>
+    </mat-menu>
 
     <mat-card-content>
       <div class="meta">

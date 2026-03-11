@@ -66,4 +66,9 @@ export class BooksPageComponent {
 
     dialogRef.afterClosed().subscribe(() => this.store.selectBook(null));
   }
+
+  onBookDeleted(book: BookSearchResult): void {
+    this.store.deleteBook(book);
+    this.snackBar.open(`Deleted "${book.title}"`, 'Dismiss', { duration: 3000 });
+  }
 }

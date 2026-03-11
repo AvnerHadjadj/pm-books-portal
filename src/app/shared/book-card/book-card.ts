@@ -3,6 +3,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DecimalPipe, NgOptimizedImage } from '@angular/common';
 
@@ -19,6 +20,7 @@ import { BookSearchResult } from '../../books/openlibrary.types';
     MatChipsModule,
     MatIconModule,
     MatButtonModule,
+    MatMenuModule,
     MatTooltipModule,
     DecimalPipe
   ],
@@ -26,6 +28,7 @@ import { BookSearchResult } from '../../books/openlibrary.types';
 export class BookCardComponent {
   readonly book = input.required<BookSearchResult>();
   readonly selected = output<BookSearchResult>();
+  readonly deleted = output<BookSearchResult>();
 
   readonly coverUrl = computed(() => {
     const coverId = this.book().cover_i;
@@ -48,5 +51,14 @@ export class BookCardComponent {
 
   onSelect(): void {
     this.selected.emit(this.book());
+  }
+
+  onMenuTriggerClick(event: Event): void {
+    event.stopPropagation();
+  }
+
+  onDelete(event: Event): void {
+    event.stopPropagation();
+    this.deleted.emit(this.book());
   }
 }

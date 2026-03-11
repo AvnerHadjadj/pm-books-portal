@@ -24,6 +24,7 @@
       [books]="store.filteredBooks()"
       [isLoading]="store.isLoading()"
       (bookSelected)="onBookSelected($event)"
+      (bookDeleted)="onBookDeleted($event)"
     />
 
     @if (store.hasMore()) {

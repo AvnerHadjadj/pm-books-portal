@@ -129,6 +129,18 @@ export const BooksStore = signalStore(
                 patchState(store, { selectedBook: book });
             },
 
+            deleteBook(bookToDelete: BookSearchResult): void {
+                const nextBooks = store.books().filter((book) => book.key !== bookToDelete.key);
+                const nextFilteredBooks = store.filteredBooks().filter((book) => book.key !== bookToDelete.key);
+
+                patchState(store, {
+                    books: nextBooks,
+                    filteredBooks: nextFilteredBooks,
+                    totalFound: nextBooks.length,
+                    selectedBook: store.selectedBook()?.key === bookToDelete.key ? null : store.selectedBook(),
+                });
+            },
+
             clearSearch(): void {
                 patchState(store, {
                     filteredBooks: store.books(),
