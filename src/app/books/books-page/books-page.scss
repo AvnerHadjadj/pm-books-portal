@@ -36,3 +36,16 @@ mat-divider {
     font-style: italic;
   }
 }
+
+.pagination-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 8px 0 16px;
+}
+
+.page-meta {
+  font-size: 13px;
+  color: var(--mat-sys-on-surface-variant);
+}

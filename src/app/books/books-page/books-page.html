@@ -12,7 +12,8 @@
   <section class="results-section" aria-label="Search results">
     @if (store.hasBooks()) {
       <p class="results-count" aria-live="polite" aria-atomic="true">
-        Found <strong>{{ store.totalFound() }}</strong> results
+        Showing <strong>{{ store.loadedCount() }}</strong> of
+        <strong>{{ store.totalFound() }}</strong> results
         @if (store.searchParams().q) {
           for "<em>{{ store.searchParams().q }}</em>"
         }
@@ -20,9 +21,23 @@
     }
 
     <app-book-list
-      [books]="store.books()"
+      [books]="store.filteredBooks()"
       [isLoading]="store.isLoading()"
       (bookSelected)="onBookSelected($event)"
     />
+
+    @if (store.hasMore()) {
+      <div class="pagination-actions">
+        <button
+          mat-stroked-button
+          type="button"
+          [disabled]="store.isLoading()"
+          aria-label="Load more books"
+        >
+          Load more
+        </button>
+        <span class="page-meta">Page {{ store.currentPage() }} of {{ store.totalPages() }}</span>
+      </div>
+    }
   </section>
 </main>
