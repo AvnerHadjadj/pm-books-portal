@@ -1,0 +1,49 @@
+<h2 mat-dialog-title>{{ data.book.title }}</h2>
+
+<mat-dialog-content class="content">
+  <div class="header-row">
+    @if (coverUrl(); as url) {
+      <img [ngSrc]="url" [alt]="data.book.title + ' cover'" width="140" height="210" [priority]="false" />
+    } @else {
+      <div class="no-cover" aria-hidden="true">
+        <mat-icon>menu_book</mat-icon>
+      </div>
+    }
+
+    <div class="meta">
+      <p><strong>Author:</strong> {{ authors() }}</p>
+      @if (data.book.first_publish_year) {
+        <p><strong>First published:</strong> {{ data.book.first_publish_year }}</p>
+      }
+      @if (data.book.edition_count) {
+        <p><strong>Editions:</strong> {{ data.book.edition_count }}</p>
+      }
+      @if (data.book.ratings_average) {
+        <p>
+          <strong>Rating:</strong>
+          {{ data.book.ratings_average | number:'1.1-1' }} / 5
+          <span class="muted">({{ data.book.ratings_count }} ratings)</span>
+        </p>
+      }
+      @if (data.book.publisher && data.book.publisher.length) {
+        <p><strong>Publisher:</strong> {{ data.book.publisher[0] }}</p>
+      }
+      @if (data.book.publish_date && data.book.publish_date.length) {
+        <p><strong>Publish date:</strong> {{ data.book.publish_date[0] }}</p>
+      }
+    </div>
+  </div>
+
+  @if (subjects().length) {
+    <h3>Subjects</h3>
+    <mat-chip-set aria-label="Book subjects">
+      @for (subject of subjects(); track subject) {
+        <mat-chip [disableRipple]="true">{{ subject }}</mat-chip>
+      }
+    </mat-chip-set>
+  }
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close type="button">Close</button>
+</mat-dialog-actions>
