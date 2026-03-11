@@ -50,6 +50,12 @@ export const BooksStore = signalStore(
         const toErrorMessage = (result: BookSearchResponse | ApiError): string | null =>
             'error' in result ? result.error : null;
 
+        const getAuthorForSort = (book: BookSearchResult): string =>
+            book.author_name?.[0]?.trim().toLowerCase() ?? '';
+
+        const getCatalogNumberForSort = (book: BookSearchResult): string =>
+            book.lccn?.[0] ?? book.oclc?.[0] ?? book.isbn?.[0] ?? '';
+
         return {
             loadInitialBooks: rxMethod<void>(
                 pipe(
@@ -102,19 +108,13 @@ export const BooksStore = signalStore(
                             return matchesAuthor && matchesQuery;
                         }).sort((a, b) => {
                             switch (params.sort) {
-                                case 'new':
-                                    return (b.first_publish_year ?? 0) - (a.first_publish_year ?? 0);
-                                case 'old':
-                                    return (a.first_publish_year ?? 0) - (b.first_publish_year ?? 0);
-                                case 'rating':
-                                    return (b.ratings_average ?? 0) - (a.ratings_average ?? 0);
-                                case 'title':
-                                    return a.title.localeCompare(b.title);
-                                case 'random':
-                                    return Math.random() - 0.5;
-                                case 'relevance':
+                                case 'author':
+                                    return getAuthorForSort(a).localeCompare(getAuthorForSort(b));
+                                case 'catalogNumber':
+                                    return getCatalogNumberForSort(a).localeCompare(getCatalogNumberForSort(b));
+                                case 'publicationDate':
                                 default:
-                                    return 0;
+                                    return (b.first_publish_year ?? 0) - (a.first_publish_year ?? 0);
                             }
                         });
                         

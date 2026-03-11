@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
-import { TitleCasePipe } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -9,6 +8,11 @@ import { MatIconModule } from '@angular/material/icon';
 
 import { BookSearchParams, SortOption } from '../../books/openlibrary.types';
 
+interface SortSelectionOption {
+  value: SortOption;
+  label: string;
+}
+
 @Component({
   selector: 'app-book-search',
   templateUrl: './book-search.html',
@@ -16,7 +20,6 @@ import { BookSearchParams, SortOption } from '../../books/openlibrary.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ReactiveFormsModule,
-    TitleCasePipe,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
@@ -29,7 +32,13 @@ export class BookSearchComponent {
   readonly searched = output<BookSearchParams>();
   readonly cleared = output<void>();
 
-  readonly sortOptions: SortOption[] = ['relevance', 'new', 'old', 'rating', 'title', 'random'];
+  readonly sortOptions: SortSelectionOption[] = [
+    { value: 'author', label: 'Author' },
+    { value: 'publicationDate', label: 'Publication date' },
+    { value: 'catalogNumber', label: 'Catalog number' },
+  ];
+
+  readonly defaultSort: SortOption = 'publicationDate';
 
   readonly form = new FormGroup({
     q: new FormControl('', {
@@ -39,7 +48,7 @@ export class BookSearchComponent {
       ]
     }),
     author: new FormControl('', { nonNullable: true }),
-    sort: new FormControl<SortOption>('relevance', { nonNullable: true }),
+    sort: new FormControl<SortOption>(this.defaultSort, { nonNullable: true }),
     limit: new FormControl(10, { nonNullable: true }),
   });
 
@@ -51,7 +60,7 @@ export class BookSearchComponent {
   }
 
   onClear(): void {
-    this.form.reset({ q: '', author: '', sort: 'relevance', limit: 10 });
+    this.form.reset({ q: '', author: '', sort: this.defaultSort, limit: 10 });
     this.cleared.emit();
   }
 }

@@ -27,7 +27,7 @@
       <mat-label>Sort by</mat-label>
       <mat-select formControlName="sort" aria-label="Sort results by">
         @for (option of sortOptions; track option) {
-          <mat-option [value]="option">{{ option | titlecase }}</mat-option>
+          <mat-option [value]="option.value">{{ option.label }}</mat-option>
         }
       </mat-select>
     </mat-form-field>

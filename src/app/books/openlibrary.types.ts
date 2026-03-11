@@ -31,7 +31,7 @@ export interface YearRange {
 /**
  * Sort options for search results
  */
-export type SortOption = 'random' | 'new' | 'old' | 'rating' | 'title' | 'relevance';
+export type SortOption = 'author' | 'publicationDate' | 'catalogNumber';
 
 /**
  * Search parameters for book search
@@ -76,7 +76,7 @@ export interface BookSearchParams {
   
   /**
    * Sort results by various criteria
-   * @default 'relevance'
+    * @default 'publicationDate'
    */
   sort?: SortOption;
   
