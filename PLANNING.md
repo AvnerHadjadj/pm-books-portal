@@ -5,8 +5,9 @@ Establish a scalable Angular architecture for the library management app using s
 ### Steps
 1. **Initial Data Loading Services**  
    - Update [app.config.ts](src/app/app.config.ts) to enable zoneless change detection and HTTP client.  
-   - Implement [src/app/books/book.service.ts](src/app/books/book.service.ts) for Open Library API HTTP calls, including rate limiting, caching, and fallback to local JSON.  
+   - Implement [src/app/books/book.service.ts](src/app/books/book.service.ts) for Open Library API HTTP calls using Observables, including rate limiting, caching, and fallback to local JSON.  
    - Manually copy Open Library API types to [src/app/books/openlibrary.types.ts](src/app/books/openlibrary.types.ts) for type safety.  
+   - Use modern Angular `inject()` method instead of constructor injection.  
    - Test API integration independently to ensure data loading works.
 
 2. **Stores (using @ngrx/signals signalStore)**  
