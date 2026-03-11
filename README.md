@@ -6,7 +6,7 @@ Library management application built with Angular.
 
 ## Live Demo
 
-- **Deployed URL:** http://pm-books-portal.angularjobs.co.il
+- **Deployed URL:** https://pm-books-portal.angularjobs.co.il
 
 ## Features
 
