@@ -2,7 +2,7 @@
   // For more information, visit: https://angular.dev/ai/mcp
   "servers": {
     "angular-cli": {
-      "command": "npx",
+      "command": "npx-for-mcp",
       "args": ["-y", "@angular/cli", "mcp"]
     }
   }
