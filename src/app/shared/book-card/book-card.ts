@@ -57,8 +57,7 @@ export class BookCardComponent {
     event.stopPropagation();
   }
 
-  onDelete(event: Event): void {
-    event.stopPropagation();
+  onDelete(): void {
     this.deleted.emit(this.book());
   }
 }
