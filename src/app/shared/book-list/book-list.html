@@ -1,0 +1,17 @@
+@if (isLoading()) {
+  <div class="spinner-container" role="status" aria-label="Loading books">
+    <mat-spinner diameter="48" />
+  </div>
+} @else if (books().length === 0) {
+  <div class="empty-state" role="status">
+    <p>No books found. Try a different search.</p>
+  </div>
+} @else {
+  <cdk-virtual-scroll-viewport itemSize="160" class="scroll-viewport" aria-label="Book results">
+    <app-book-card
+      *cdkVirtualFor="let book of books(); trackBy: trackByKey"
+      [book]="book"
+      (selected)="bookSelected.emit($event)"
+    />
+  </cdk-virtual-scroll-viewport>
+}

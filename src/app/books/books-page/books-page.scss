@@ -1,0 +1,38 @@
+.page-content {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.search-section {
+  background: var(--mat-sys-surface-container);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+mat-divider {
+  margin: 0;
+}
+
+.results-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.results-count {
+  font-size: 14px;
+  color: var(--mat-sys-on-surface-variant);
+  margin: 0;
+
+  strong {
+    color: var(--mat-sys-on-surface);
+  }
+
+  em {
+    font-style: italic;
+  }
+}

@@ -1,0 +1,65 @@
+<form [formGroup]="form" (ngSubmit)="onSearch()" class="search-form" role="search" aria-label="Search books">
+  <div class="search-row">
+    <mat-form-field appearance="outline" class="field-query">
+      <mat-label>Search books</mat-label>
+      <mat-icon matPrefix aria-hidden="true">search</mat-icon>
+      <input
+        matInput
+        formControlName="q"
+        placeholder="Title, keyword…"
+        aria-label="Search query"
+        autocomplete="off"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="field-author">
+      <mat-label>Author</mat-label>
+      <input
+        matInput
+        formControlName="author"
+        placeholder="Author name"
+        aria-label="Filter by author"
+        autocomplete="off"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="field-sort">
+      <mat-label>Sort by</mat-label>
+      <mat-select formControlName="sort" aria-label="Sort results by">
+        @for (option of sortOptions; track option) {
+          <mat-option [value]="option">{{ option | titlecase }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="field-limit">
+      <mat-label>Results</mat-label>
+      <mat-select formControlName="limit" aria-label="Number of results per page">
+        @for (n of limitOptions; track n) {
+          <mat-option [value]="n">{{ n }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="search-actions">
+    <button
+      mat-flat-button
+      type="submit"
+      [disabled]="isLoading() || !form.value.q?.trim()"
+      aria-label="Search"
+    >
+      <mat-icon aria-hidden="true">search</mat-icon>
+      Search
+    </button>
+    <button
+      mat-stroked-button
+      type="button"
+      (click)="onClear()"
+      [disabled]="isLoading()"
+      aria-label="Clear search"
+    >
+      Clear
+    </button>
+  </div>
+</form>

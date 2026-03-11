@@ -1,0 +1,28 @@
+<main class="page-content">
+  <section class="search-section" aria-label="Book search">
+    <app-book-search
+      [isLoading]="store.isLoading()"
+      (searched)="onSearch($event)"
+      (cleared)="onCleared()"
+    />
+  </section>
+
+  <mat-divider />
+
+  <section class="results-section" aria-label="Search results">
+    @if (store.hasBooks()) {
+      <p class="results-count" aria-live="polite" aria-atomic="true">
+        Found <strong>{{ store.totalFound() }}</strong> results
+        @if (store.searchParams().q) {
+          for "<em>{{ store.searchParams().q }}</em>"
+        }
+      </p>
+    }
+
+    <app-book-list
+      [books]="store.books()"
+      [isLoading]="store.isLoading()"
+      (bookSelected)="onBookSelected($event)"
+    />
+  </section>
+</main>

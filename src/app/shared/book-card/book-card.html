@@ -1,0 +1,70 @@
+<mat-card
+  class="book-card"
+  (click)="onSelect()"
+  (keydown.enter)="onSelect()"
+  (keydown.space)="onSelect()"
+  role="button"
+  tabindex="0"
+  [attr.aria-label]="'View details for ' + book().title"
+>
+  <div class="card-cover">
+    @if (coverUrl(); as url) {
+      <img
+        [ngSrc]="url"
+        [alt]="book().title + ' cover'"
+        width="80"
+        height="120"
+        [priority]="false"
+      />
+    } @else {
+      <div class="no-cover" aria-hidden="true">
+        <mat-icon>menu_book</mat-icon>
+      </div>
+    }
+  </div>
+
+  <div class="card-body">
+    <mat-card-header>
+      <mat-card-title [matTooltip]="book().title">{{ book().title }}</mat-card-title>
+      <mat-card-subtitle>{{ authorsText() }}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="meta">
+        @if (book().first_publish_year) {
+          <span class="year" aria-label="First published {{ book().first_publish_year }}">
+            <mat-icon aria-hidden="true">calendar_today</mat-icon>
+            {{ book().first_publish_year }}
+          </span>
+        }
+
+        @if (book().edition_count) {
+          <span class="editions" aria-label="{{ book().edition_count }} editions">
+            <mat-icon aria-hidden="true">layers</mat-icon>
+            {{ book().edition_count }}
+          </span>
+        }
+      </div>
+
+      @if (book().ratings_average) {
+        <div
+          class="rating"
+          [attr.aria-label]="'Rating: ' + (book().ratings_average | number:'1.1-1') + ' out of 5 (' + book().ratings_count + ' ratings)'"
+        >
+          @for (icon of ratingStars(); track $index) {
+            <mat-icon aria-hidden="true" class="star-icon">{{ icon }}</mat-icon>
+          }
+          <span class="rating-count">({{ book().ratings_count }})</span>
+        </div>
+      }
+
+      @if (topSubjects().length) {
+        <mat-chip-set class="subjects" aria-label="Subjects">
+          @for (subject of topSubjects(); track subject) {
+            <mat-chip [disableRipple]="true">{{ subject }}</mat-chip>
+          }
+        </mat-chip-set>
+      }
+    </mat-card-content>
+  </div>
+</mat-card>
