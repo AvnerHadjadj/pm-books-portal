@@ -28,6 +28,7 @@ import { BookSearchResult } from '../../books/openlibrary.types';
 export class BookCardComponent {
   readonly book = input.required<BookSearchResult>();
   readonly selected = output<BookSearchResult>();
+  readonly edited = output<BookSearchResult>();
   readonly deleted = output<BookSearchResult>();
 
   readonly coverUrl = computed(() => {
@@ -55,6 +56,10 @@ export class BookCardComponent {
 
   onMenuTriggerClick(event: Event): void {
     event.stopPropagation();
+  }
+
+  onEdit(): void {
+    this.edited.emit(this.book());
   }
 
   onDelete(): void {

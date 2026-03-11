@@ -5,7 +5,7 @@ import { EMPTY, pipe } from 'rxjs';
 import { catchError, filter, switchMap, tap } from 'rxjs/operators';
 
 import { BookService } from './book.service';
-import { ApiError, BookSearchParams, BookSearchResponse, BookSearchResult } from './openlibrary.types';
+import { ApiError, BookSearchParams, BookSearchResponse, BookSearchResult, BookUpsertInput } from './openlibrary.types';
 
 const INITIAL_LIST_LENGTH = 200;
 const DEFAULT_PAGE_SIZE = 10;
@@ -55,6 +55,104 @@ export const BooksStore = signalStore(
 
         const getCatalogNumberForSort = (book: BookSearchResult): string =>
             book.lccn?.[0] ?? book.oclc?.[0] ?? book.isbn?.[0] ?? '';
+
+        const normalizeToken = (value: string): string =>
+            value
+                .trim()
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/(^-|-$)/g, '');
+
+        const buildNewBook = (input: BookUpsertInput): BookSearchResult => {
+            const nowEpochSeconds = Math.floor(Date.now() / 1000);
+            const normalizedAuthor = normalizeToken(input.author) || 'unknown-author';
+            const normalizedTitle = normalizeToken(input.title) || 'untitled';
+            const generatedKey = `/works/LOCAL-${Date.now()}-${Math.floor(Math.random() * 100_000)}`;
+
+            return {
+                key: generatedKey,
+                type: 'work',
+                seed: [generatedKey],
+                title: input.title.trim(),
+                title_suggest: input.title.trim(),
+                title_sort: input.title.trim().toLowerCase(),
+                edition_count: 1,
+                edition_key: [],
+                publish_date: [String(input.first_publish_year)],
+                publish_year: [input.first_publish_year],
+                first_publish_year: input.first_publish_year,
+                number_of_pages_median: 0,
+                lccn: [input.catalog_number.trim()],
+                publish_place: [],
+                oclc: [],
+                contributor: [],
+                lcc: [],
+                ddc: [],
+                isbn: [],
+                last_modified_i: nowEpochSeconds,
+                ebook_count_i: 0,
+                ebook_access: 'no_ebook',
+                has_fulltext: false,
+                public_scan_b: false,
+                ia: [],
+                ia_collection: [],
+                ia_collection_s: '',
+                lending_edition_s: '',
+                lending_identifier_s: '',
+                printdisabled_s: '',
+                ratings_average: input.ratings_average ?? 0,
+                ratings_sortable: input.ratings_average ?? 0,
+                ratings_count: 0,
+                ratings_count_1: 0,
+                ratings_count_2: 0,
+                ratings_count_3: 0,
+                ratings_count_4: 0,
+                ratings_count_5: 0,
+                readinglog_count: 0,
+                want_to_read_count: 0,
+                currently_reading_count: 0,
+                already_read_count: 0,
+                cover_edition_key: '',
+                cover_i: 0,
+                publisher: [],
+                language: [],
+                author_key: [normalizedAuthor],
+                author_name: [input.author.trim()],
+                author_alternative_name: [],
+                person: [],
+                place: [],
+                subject: ['Manual Entry'],
+                time: [],
+                id_amazon: [],
+                id_librarything: [],
+                id_goodreads: [],
+                id_google: [],
+                id_project_gutenberg: [],
+                id_standard_ebooks: [],
+            };
+        };
+
+        const applyBookUpdate = (book: BookSearchResult, input: BookUpsertInput): BookSearchResult => {
+            const updatedTitle = input.title.trim();
+            const updatedAuthor = input.author.trim();
+            const updatedCatalog = input.catalog_number.trim();
+            const normalizedAuthor = normalizeToken(updatedAuthor) || 'unknown-author';
+
+            return {
+                ...book,
+                title: updatedTitle,
+                title_suggest: updatedTitle,
+                title_sort: updatedTitle.toLowerCase(),
+                author_name: [updatedAuthor],
+                author_key: [normalizedAuthor],
+                first_publish_year: input.first_publish_year,
+                publish_year: [input.first_publish_year],
+                publish_date: [String(input.first_publish_year)],
+                lccn: [updatedCatalog],
+                ratings_average: input.ratings_average ?? book.ratings_average,
+                ratings_sortable: input.ratings_average ?? book.ratings_sortable,
+            };
+        };
 
         return {
             loadInitialBooks: rxMethod<void>(
@@ -127,6 +225,34 @@ export const BooksStore = signalStore(
 
             selectBook(book: BookSearchResult | null): void {
                 patchState(store, { selectedBook: book });
+            },
+
+            addBook(input: BookUpsertInput): void {
+                const createdBook = buildNewBook(input);
+                const nextBooks = [createdBook, ...store.books()];
+                const nextFilteredBooks = [createdBook, ...store.filteredBooks()];
+
+                patchState(store, {
+                    books: nextBooks,
+                    filteredBooks: nextFilteredBooks,
+                    totalFound: nextBooks.length,
+                });
+            },
+
+            editBook(targetKey: string, input: BookUpsertInput): void {
+                const nextBooks = store.books().map((book) =>
+                    book.key === targetKey ? applyBookUpdate(book, input) : book,
+                );
+                const nextFilteredBooks = store.filteredBooks().map((book) =>
+                    book.key === targetKey ? applyBookUpdate(book, input) : book,
+                );
+                const selectedBook = store.selectedBook();
+
+                patchState(store, {
+                    books: nextBooks,
+                    filteredBooks: nextFilteredBooks,
+                    selectedBook: selectedBook?.key === targetKey ? applyBookUpdate(selectedBook, input) : selectedBook,
+                });
             },
 
             deleteBook(bookToDelete: BookSearchResult): void {

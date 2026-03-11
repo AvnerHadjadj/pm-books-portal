@@ -34,6 +34,17 @@ export interface YearRange {
 export type SortOption = 'author' | 'publicationDate' | 'catalogNumber';
 
 /**
+ * Payload used by local add/edit book form
+ */
+export interface BookUpsertInput {
+  title: string;
+  author: string;
+  first_publish_year: number;
+  catalog_number: string;
+  ratings_average?: number;
+}
+
+/**
  * Search parameters for book search
  */
 export interface BookSearchParams {

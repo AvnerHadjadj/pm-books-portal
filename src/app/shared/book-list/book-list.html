@@ -12,6 +12,7 @@
       *cdkVirtualFor="let book of books(); trackBy: trackByKey"
       [book]="book"
       (selected)="bookSelected.emit($event)"
+      (edited)="bookEdited.emit($event)"
       (deleted)="bookDeleted.emit($event)"
     />
   </cdk-virtual-scroll-viewport>

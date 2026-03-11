@@ -9,9 +9,10 @@ import { MatBadgeModule } from '@angular/material/badge';
 
 import { BooksStore } from '../book.store';
 import { BookDetailsDialogComponent } from '../book-details-dialog/book-details-dialog';
+import { BookFormDialogComponent } from '../book-form-dialog/book-form-dialog';
 import { BookSearchComponent } from '../../shared/book-search/book-search';
 import { BookListComponent } from '../../shared/book-list/book-list';
-import { BookSearchParams, BookSearchResult } from '../openlibrary.types';
+import { BookSearchParams, BookSearchResult, BookUpsertInput } from '../openlibrary.types';
 
 @Component({
   selector: 'app-books-page',
@@ -65,6 +66,42 @@ export class BooksPageComponent {
     });
 
     dialogRef.afterClosed().subscribe(() => this.store.selectBook(null));
+  }
+
+  onAddBook(): void {
+    const dialogRef = this.dialog.open(BookFormDialogComponent, {
+      data: { mode: 'add' },
+      maxWidth: '90vw',
+      width: '560px',
+      autoFocus: false,
+    });
+
+    dialogRef.afterClosed().subscribe((result?: BookUpsertInput) => {
+      if (!result) {
+        return;
+      }
+
+      this.store.addBook(result);
+      this.snackBar.open(`Added "${result.title}"`, 'Dismiss', { duration: 3000 });
+    });
+  }
+
+  onBookEdited(book: BookSearchResult): void {
+    const dialogRef = this.dialog.open(BookFormDialogComponent, {
+      data: { mode: 'edit', book },
+      maxWidth: '90vw',
+      width: '560px',
+      autoFocus: false,
+    });
+
+    dialogRef.afterClosed().subscribe((result?: BookUpsertInput) => {
+      if (!result) {
+        return;
+      }
+
+      this.store.editBook(book.key, result);
+      this.snackBar.open(`Updated "${result.title}"`, 'Dismiss', { duration: 3000 });
+    });
   }
 
   onBookDeleted(book: BookSearchResult): void {

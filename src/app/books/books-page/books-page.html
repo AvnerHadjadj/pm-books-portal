@@ -1,4 +1,11 @@
 <main class="page-content">
+  <section class="actions-section" aria-label="Book actions">
+    <button mat-flat-button type="button" (click)="onAddBook()" aria-label="Add book">
+      <mat-icon aria-hidden="true">add</mat-icon>
+      Add book
+    </button>
+  </section>
+
   <section class="search-section" aria-label="Book search">
     <app-book-search
       [isLoading]="store.isLoading()"
@@ -24,6 +31,7 @@
       [books]="store.filteredBooks()"
       [isLoading]="store.isLoading()"
       (bookSelected)="onBookSelected($event)"
+      (bookEdited)="onBookEdited($event)"
       (bookDeleted)="onBookDeleted($event)"
     />
 

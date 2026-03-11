@@ -16,6 +16,7 @@ export class BookListComponent {
   readonly books = input.required<BookSearchResult[]>();
   readonly isLoading = input<boolean>(false);
   readonly bookSelected = output<BookSearchResult>();
+  readonly bookEdited = output<BookSearchResult>();
   readonly bookDeleted = output<BookSearchResult>();
 
   trackByKey(_index: number, book: BookSearchResult): string {

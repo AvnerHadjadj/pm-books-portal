@@ -39,6 +39,10 @@
     </mat-card-header>
 
     <mat-menu #bookActionsMenu="matMenu" yPosition="below">
+      <button mat-menu-item type="button" (click)="onEdit()">
+        <mat-icon>edit</mat-icon>
+        <span>Edit</span>
+      </button>
       <button mat-menu-item type="button" (click)="onDelete()">
         <mat-icon>delete</mat-icon>
         <span>Delete</span>
@@ -65,12 +69,12 @@
       @if (book().ratings_average) {
         <div
           class="rating"
-          [attr.aria-label]="'Rating: ' + (book().ratings_average | number:'1.1-1') + ' out of 5 (' + book().ratings_count + ' ratings)'"
+          [attr.aria-label]="'Rating: ' + (book().ratings_average | number:'1.1-1') + ' out of 5 (' + (book().ratings_count || 0) + ' ratings)'"
         >
           @for (icon of ratingStars(); track $index) {
             <mat-icon aria-hidden="true" class="star-icon">{{ icon }}</mat-icon>
           }
-          <span class="rating-count">({{ book().ratings_count }})</span>
+          <span class="rating-count">({{ book().ratings_count || 0 }})</span>
         </div>
       }
 

@@ -1,0 +1,68 @@
+<h2 mat-dialog-title>{{ dialogTitle() }}</h2>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <mat-dialog-content class="dialog-content">
+    <mat-form-field appearance="outline">
+      <mat-label>Title</mat-label>
+      <input matInput formControlName="title" maxlength="180" />
+      @if (form.controls.title.touched && form.controls.title.hasError('required')) {
+        <mat-error>Title is required.</mat-error>
+      }
+      @if (form.controls.title.touched && form.controls.title.hasError('minlength')) {
+        <mat-error>Title must be at least 2 characters.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Author</mat-label>
+      <input matInput formControlName="author" maxlength="120" />
+      @if (form.controls.author.touched && form.controls.author.hasError('required')) {
+        <mat-error>Author is required.</mat-error>
+      }
+      @if (form.controls.author.touched && form.controls.author.hasError('minlength')) {
+        <mat-error>Author must be at least 2 characters.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Publication year</mat-label>
+      <input matInput type="number" formControlName="first_publish_year" min="1450" />
+      @if (form.controls.first_publish_year.touched && form.controls.first_publish_year.hasError('required')) {
+        <mat-error>Publication year is required.</mat-error>
+      }
+      @if (form.controls.first_publish_year.touched && form.controls.first_publish_year.hasError('min')) {
+        <mat-error>Publication year must be 1450 or later.</mat-error>
+      }
+      @if (form.controls.first_publish_year.touched && form.controls.first_publish_year.hasError('max')) {
+        <mat-error>Publication year is too far in the future.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Catalog number</mat-label>
+      <input matInput formControlName="catalog_number" maxlength="40" />
+      @if (form.controls.catalog_number.touched && form.controls.catalog_number.hasError('required')) {
+        <mat-error>Catalog number is required.</mat-error>
+      }
+      @if (form.controls.catalog_number.touched && form.controls.catalog_number.hasError('pattern')) {
+        <mat-error>Use letters, numbers, spaces, and - . / only.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Rating (optional)</mat-label>
+      <input matInput type="number" formControlName="ratings_average" min="0" max="5" step="0.1" />
+      @if (form.controls.ratings_average.touched && form.controls.ratings_average.hasError('min')) {
+        <mat-error>Rating must be at least 0.</mat-error>
+      }
+      @if (form.controls.ratings_average.touched && form.controls.ratings_average.hasError('max')) {
+        <mat-error>Rating cannot exceed 5.</mat-error>
+      }
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close type="button">Cancel</button>
+    <button mat-flat-button type="submit">{{ submitLabel() }}</button>
+  </mat-dialog-actions>
+</form>

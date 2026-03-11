@@ -1,0 +1,10 @@
+.dialog-content {
+  display: grid;
+  gap: 12px;
+  min-width: min(560px, 100vw - 64px);
+  padding-top: 8px;
+}
+
+mat-form-field {
+  width: 100%;
+}
