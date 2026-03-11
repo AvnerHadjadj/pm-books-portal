@@ -15,6 +15,8 @@ module.exports = defineConfig([
     ],
     processor: angular.processInlineTemplates,
     rules: {
+      indent: ['error', 2, { SwitchCase: 1 }],
+      'no-tabs': 'error',
       '@angular-eslint/directive-selector': [
         'error',
         {
@@ -36,6 +38,8 @@ module.exports = defineConfig([
   {
     files: ['**/*.html'],
     extends: [angular.configs.templateRecommended, angular.configs.templateAccessibility],
-    rules: {},
+    rules: {
+      'no-tabs': 'error',
+    },
   },
 ]);
