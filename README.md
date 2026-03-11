@@ -1,3 +1,5 @@
+<img width="96" height="96" alt="favicon-96x96" src="https://github.com/user-attachments/assets/3120a940-a53e-4ce0-a823-10fded23f926" />
+
 # PM Books Portal
 
 Library management application built with Angular.
