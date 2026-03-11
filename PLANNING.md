@@ -3,14 +3,28 @@
 Establish a scalable Angular architecture for the library management app using standalone components with OnPush change detection and zoneless configuration. Organize code into feature-based folders (e.g., books) with @ngrx/signals signalStore for state management, and shared dumb components for reusability. Load initial book data via HTTP calls to Open Library API through a dedicated service, ensuring responsive design and clean separation of concerns for maintainability and performance. Leverage Angular 21.2 syntax, including experimental signal forms and modern control flow.
 
 ### Steps
-1. Update [app.config.ts](src/app/app.config.ts) to enable zoneless change detection and HTTP client.
-2. Install and configure @ngrx/signals for signalStore-based state management.
-3. Create [src/app/books/](src/app/books/) feature folder with signalStore service for book state management using @ngrx/signals.
-4. Implement [src/app/books/book.service.ts](src/app/books/book.service.ts) for Open Library API HTTP calls.
-5. Manually copy Open Library API types to [src/app/books/openlibrary.types.ts](src/app/books/openlibrary.types.ts) for type safety.
-6. Design shared dumb components in [src/app/shared/](src/app/shared/) for book list, details, and forms using signal-based reactive forms (@angular/forms with signals).
-7. Configure [app.routes.ts](src/app/app.routes.ts) for lazy-loaded book feature routing.
-8. Integrate search/filter in book list using store signals and OnPush updates with modern control flow (@if, @for).
+1. **Initial Data Loading Services**  
+   - Update [app.config.ts](src/app/app.config.ts) to enable zoneless change detection and HTTP client.  
+   - Implement [src/app/books/book.service.ts](src/app/books/book.service.ts) for Open Library API HTTP calls, including rate limiting, caching, and fallback to local JSON.  
+   - Manually copy Open Library API types to [src/app/books/openlibrary.types.ts](src/app/books/openlibrary.types.ts) for type safety.  
+   - Test API integration independently to ensure data loading works.
+
+2. **Stores (using @ngrx/signals signalStore)**  
+   - Install and configure @ngrx/signals for signalStore-based state management.  
+   - Create [src/app/books/](src/app/books/) feature folder with signalStore service for book state management.  
+   - Define methods for loading data, adding/editing/deleting books, and computed signals for derived data (e.g., filtered lists).  
+   - Integrate with the data service for reactive state handling.
+
+3. **Dumb Components**  
+   - Design shared dumb components in [src/app/shared/](src/app/shared/) for book list, details, and forms using signal-based reactive forms (@angular/forms with signals).  
+   - Leverage Angular 21.2 features like modern control flow (@if, @for) and OnPush change detection.  
+   - Ensure components are standalone, reusable, and focused on presentation with signal-driven updates.
+
+4. **Features Page**  
+   - Configure [app.routes.ts](src/app/app.routes.ts) for lazy-loaded book feature routing.  
+   - Create the main books feature page/component to orchestrate components, stores, and services.  
+   - Integrate search/filter logic using store signals and OnPush updates.  
+   - Add page-level features like pagination if implemented.
 
 ### Further Considerations
 1. Use signals in store services for reactive state; confirm if computed signals suffice for derived data.
